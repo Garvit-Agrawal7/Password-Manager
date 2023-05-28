@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import *
 import pyperclip
+import json
 
 
 FONT = ('calibri', 10)
@@ -30,16 +31,25 @@ def save():
     website_entry = site.get()
     email = name.get()
     given_password = password_entry.get()
+    data_dict = {
+        website_entry:
+                {
+                 "email": email,
+                 "password": given_password
+                }}
     if len(website_entry) == 0 or len(given_password) == 0:
         messagebox.showinfo(title='Oops', message="Please don't leave any of the fields empty!")
     else:
-        save_details = messagebox.askokcancel(title=website_entry, message=f"Do you want to save these details\nEmail: "
-                                                                           f"{email}\nPassword: {given_password}")
-        if save_details is True:
-            with open('data.txt', 'a') as data:
-                data.write(f"{website_entry} | {email} | {given_password}\n")
-                site.delete(0, END)
-                password_entry.delete(0, END)
+        with open('data.json', 'r') as data:
+            # Reading old data
+            new_data = json.load(data)
+            # Updating old data
+            new_data.update(data_dict)
+        with open('data.json', 'w') as data:
+            # Saving updated data
+            json.dump(new_data, data, indent=4)
+            site.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
