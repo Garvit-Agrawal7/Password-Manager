@@ -8,6 +8,17 @@ import json
 FONT = ('calibri', 10)
 
 
+# ---------------------------- FIND PASSWORD ------------------------------- #
+def find_password():
+    try:
+        with open('data.json', 'r') as data:
+            sites = json.load(data)
+            info = sites[site.get()]
+            messagebox.showinfo(title=site.get(), message=f"Email: {info['email']}\nPassword: {info['password']}")
+    except KeyError:
+        messagebox.showinfo(title="Data not Found", message="It seems like that site doesn't exist!")
+
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -50,14 +61,13 @@ def save():
             with open('data.json', 'w') as data:
                 # Saving updated data
                 json.dump(data_dict, data, indent=4)
-                site.delete(0, END)
-                password_entry.delete(0, END)
         else:
             with open('data.json', 'w') as data:
                 # Saving updated data
                 json.dump(new_data, data, indent=4)
-                site.delete(0, END)
-                password_entry.delete(0, END)
+        finally:
+            site.delete(0, END)
+            password_entry.delete(0, END)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -79,16 +89,18 @@ password = Label(text='Password:', font=FONT)
 password.grid(row=3, column=0)
 
 # Entries
-site = Entry(width=42)
-site.grid(row=1, column=1, columnspan=2)
+site = Entry(width=24)
+site.grid(row=1, column=1)
 site.focus()
 name = Entry(width=42)
 name.grid(row=2, column=1, columnspan=2)
-name.insert(END, 'garvitagrawal321@gmail.com')
+name.insert(END, 'garvitagrawal75@gmail.com')
 password_entry = Entry(width=24)
 password_entry.grid(row=3, column=1)
 
 # Buttons
+search = Button(text='Search', width=14, command=find_password)
+search.grid(row=1, column=2)
 generate_password = Button(text='Generate Password', width=14, command=password_generator)
 generate_password.grid(row=3, column=2)
 add = Button(text='Add', width=35, command=save)
