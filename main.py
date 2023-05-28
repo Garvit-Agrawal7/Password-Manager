@@ -17,6 +17,8 @@ def find_password():
             messagebox.showinfo(title=site.get(), message=f"Email: {info['email']}\nPassword: {info['password']}")
     except KeyError:
         messagebox.showinfo(title="Data not Found", message="It seems like that site doesn't exist!")
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="Data File not Found Error")
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
